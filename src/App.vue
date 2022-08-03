@@ -1,10 +1,23 @@
 <template>
+  
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <HomeMenu/>
+    <hr/>
+
   </nav>
+
   <router-view/>
 </template>
+
+<script>
+
+import HomeMenu from './components/home-menu.vue';
+
+export default {
+    components: { HomeMenu }
+}
+</script>
+
 
 <style lang="scss">
 #app {
@@ -16,7 +29,11 @@
 }
 
 nav {
-  padding: 30px;
+  hr {
+    border-bottom: 1.4px solid;
+    border-color: #39393b;
+  }
+  padding: 5px;
 
   a {
     font-weight: bold;
