@@ -1,7 +1,10 @@
 <template>
   <div>
-    <h1>todos os produtos</h1>
     <div class="principal">
+      <div class="topo">
+        <h1>Produtos</h1>
+        <button class="btn btn-success"><router-link to="/" class="link">Adicionar produto</router-link></button>
+      </div>
       <ul>
         <li>
           <div class="dados" id="id" ><strong>ID</strong>
@@ -15,7 +18,7 @@
         </li>
       </ul>
     </div>
-    <div class="principal" v-for="tupla in dados_local" :key="tupla.id">
+    <div class="principal" v-for="tupla in productsModule.products" :key="tupla.id">
       <ul>
         <li>
           <div class="dados" id="id" >
@@ -33,29 +36,34 @@
         </li>
       </ul>
     </div>
-    <hr />
-    <h1>somente categoria papelaria</h1>
-    <div class="mt-4" v-for="tupla in dados_local" :key="tupla.id">
-      <div v-if="tupla.category.name == 'Papelaria'">{{ tupla.name }}</div>
+    
     </div>
-  </div>
 </template>
 
 <script>
-import banco from "@/data/data.json";
+
+import { mapState, mapActions } from 'vuex'
 
 export default {
   data() {
     return {
-      dados_local: banco,
+      // dados_local: banco,
     };
   },
   methods: {
-
+    ...mapActions('productsModule',['getProducts']),
     dinheiro(valor) {
 
         return 'R$'+valor.toFixed(2);
     }
+  },
+  computed:{
+    ...mapState(['productsModule'])
+
+  },
+  created() {
+    
+    this.getProducts()
   }
 };
 </script>
@@ -63,6 +71,17 @@ export default {
 <style lang="scss" scoped>
 .principal {
     padding: 0.01%;
+    .topo{
+      display: flex;
+      padding: 1.5%;
+      justify-content: space-around;
+      .btn {
+        .link {
+          text-decoration: none;
+          color: white
+        }
+      }
+    }
     ul {
         list-style-type: none;
         li {
