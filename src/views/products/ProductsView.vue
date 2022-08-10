@@ -3,18 +3,15 @@
     <div class="principal">
       <div class="topo">
         <h1>Produtos</h1>
-        <button class="btn btn-success"><router-link to="/" class="link">Adicionar produto</router-link></button>
+        <button class="btn btn-success"><router-link to="products-register" class="link">Adicionar produto</router-link></button>
       </div>
       <ul>
         <li>
-          <div class="dados" id="id" ><strong>ID</strong>
-          </div>
-          <div class="dados" id="price"><strong>VALOR</strong>
-          </div>
-          <div class="dados" id="name"><strong>PRODUTO</strong>
-          </div>
-          <div class="dados" id="amount"> <strong>QTD</strong>
-          </div>
+          <div class="dados" id="id" ><strong>ID</strong></div>
+          <div class="dados" id="price"><strong>VALOR</strong> </div>
+          <div class="dados" id="name"><strong>PRODUTO</strong> </div>
+          <div class="dados" id="amount"> <strong>QTD</strong> </div>
+          <div class="dados" id="action"> AÇÃO </div>
         </li>
       </ul>
     </div>
@@ -32,6 +29,13 @@
           </div>
           <div class="dados" id="amount">
             {{ tupla.amount }} un
+          </div>
+          <div class="dados" id="action">
+            
+            <router-link v-bind:to="{ name: 'products-update', params: { id: tupla.id } }"   >
+              <button class="btn btn-primary">VER</button>
+            </router-link>
+
           </div>
         </li>
       </ul>
@@ -53,8 +57,10 @@ export default {
   methods: {
     ...mapActions('productsModule',['getProducts']),
     dinheiro(valor) {
-
-        return 'R$'+valor.toFixed(2);
+        if(valor)
+          return 'R$'+valor.toFixed(2);
+        else
+         return valor;
     }
   },
   computed:{
