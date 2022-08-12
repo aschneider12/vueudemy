@@ -35,7 +35,9 @@
             <router-link v-bind:to="{ name: 'products-update', params: { id: tupla.id } }"   >
               <button class="btn btn-primary">VER</button>
             </router-link>
-
+          
+            <button class="btn btn-danger ml-2" v-on:click="excluirProduto(tupla.id)">EXCLUIR</button>
+          
           </div>
         </li>
       </ul>
@@ -55,12 +57,33 @@ export default {
     };
   },
   methods: {
-    ...mapActions('productsModule',['getProducts']),
+    ...mapActions('productsModule',['getProducts', 'deleteProduct']),
     dinheiro(valor) {
         if(valor)
           return 'R$'+valor.toFixed(2);
         else
          return valor;
+    },
+    
+    excluirProduto(id){
+
+      
+        console.log('excluindo id',id)
+        // this.deleteProduct(id);
+
+        this.deleteProduct(id).then(() => {
+          console.log('ja vai atualizar')
+          this.atualizaTela()
+        })
+        //ta excluindo so nao atualiza a tela pq o await nao ta funcionando como deveria
+
+
+      
+
+    }, 
+    atualizaTela(){
+      //this.getProducts()
+      this.$router.go();
     }
   },
   computed:{
@@ -70,6 +93,7 @@ export default {
   created() {
     
     this.getProducts()
+    // this.$router.go();
   }
 };
 </script>

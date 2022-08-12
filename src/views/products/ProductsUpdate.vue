@@ -2,6 +2,12 @@
   <div class="main">
     <h2>Visualização do produto</h2>
     <h1>ID #{{id}}</h1>
+    <div class="alert alert-success" v-if="status_success">
+      <h4>Dados atualizados com sucesso!</h4>
+    </div>
+    <div class="alert-warning" v-else-if="status_error">
+      <h4>{{message}}</h4>
+    </div>
     <div class="form">
       <form>
         <div class="row">
@@ -33,7 +39,10 @@ import { mapState, mapActions } from 'vuex'
 export default {
     data(){
         return {
-            id: this.$route.params.id
+            id: this.$route.params.id,
+            message : 'ERROR',
+            status_success : false,
+            status_error : false
         }
     },
     computed: {
@@ -43,15 +52,30 @@ export default {
 //     ...mapState(['productsModule']) //mapeia o modulo todo tendo acesso a qualquer 'state' disponivel no module
 //   },
     methods: {
-        ...mapActions('productsModule',['findProductById']),
-        updateProduto(produto){
-             var toUpdate = { 
+        ...mapActions('productsModule',['findProductById','updateProduct']),
+
+        async updateProduto(produto){
+          //nao sei pq isso, da pra chamar direto do form e enviar ao productUpdate
+          var toUpdate = { 
                 id: produto.id,
                 name: produto.name,
                 amount: produto.amount,
                 price: produto.price
             }
             console.log(toUpdate)
+
+            try {
+
+              await this.updateProduct(toUpdate);
+              this.status_success = true;
+              await this.findProductById(produto.id);
+              
+            } catch (error) {
+              
+              console.log(error);
+              this.message = error.data ? error.data.message : 'Não foi possível atualizar o produto';
+              this.status_error = true
+            }
         }
     },
     created(){
