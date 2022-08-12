@@ -3,6 +3,7 @@
     <div class="principal">
       <div class="topo">
         <h1>Produtos</h1>
+        {{dados_local}}
         <button class="btn btn-success"><router-link to="products-register" class="link">Adicionar produto</router-link></button>
       </div>
       <ul>
@@ -50,10 +51,12 @@
 
 import { mapState, mapActions } from 'vuex'
 
+import banco from '@/data/data.json'
+
 export default {
   data() {
     return {
-      // dados_local: banco,
+      dados_local: banco,
     };
   },
   methods: {
